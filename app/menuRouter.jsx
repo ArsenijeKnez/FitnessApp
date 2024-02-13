@@ -7,6 +7,28 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-virtualized-view'
 import Calculator from '../components/calculator';
+import Progress from '../components/progress';
+import Notification from '../components/notification';
+import Planner from '../components/planner';
+import Finances from '../components/finances';
+
+function DetermineFunction({param}) {
+    switch (param) {
+      case 'One Rep Calculator':
+        return (<Calculator/>);
+      case 'Progress':
+        return (<Progress/>);
+      case 'Notification':
+        return (<Notification/>);
+      case 'Planner':
+        return (<Planner/>);
+      case 'Finances':
+        return (<Finances/>);
+      default:
+        return (<Text>Not Implemented</Text>)
+    }
+  }
+
 
 export default function Router() {
     const router = useRouter();
@@ -37,9 +59,10 @@ export default function Router() {
                 {item.name}
             </Text>
             <View className="mb-10">
-
+                <DetermineFunction param={item.name}/>
             </View>
         </View>
     </ScrollView>
   )
 }
+  

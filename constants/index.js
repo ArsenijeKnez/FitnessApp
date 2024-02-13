@@ -5,7 +5,7 @@ export const rapidApiKey = '04aa0cc31bmshea3f40898ef3d9dp122e90jsne626e72544a4';
 
 export const menuItems = [
   {
-    name: 'progress',
+    name: 'Progress',
     image: require('../assets/images/statistics.png'),
   },
   {
@@ -23,7 +23,7 @@ export const menuItems = [
   },
 
   {
-    name: 'One Rep Calculator ',
+    name: 'One Rep Calculator',
     image: require('../assets/images/calculator.png'),
   },
   {
