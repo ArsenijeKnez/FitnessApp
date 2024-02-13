@@ -11,6 +11,7 @@ import Progress from '../components/progress';
 import Notification from '../components/notification';
 import Planner from '../components/planner';
 import Finances from '../components/finances';
+import Exercises from '../components/exercises';
 
 function DetermineFunction({param}) {
     switch (param) {
@@ -24,6 +25,8 @@ function DetermineFunction({param}) {
         return (<Planner/>);
       case 'Finances':
         return (<Finances/>);
+      case 'Exercises':
+        return (<Exercises/>);
       default:
         return (<Text>Not Implemented</Text>)
     }
