@@ -32,7 +32,7 @@ export default function Profile() {
 
         <Animated.View entering={FadeInDown.delay(550).springify()}>
             <TouchableOpacity
-                onPress={()=> router.push('home')}
+                onPress={()=> router.push('index')}
                 style={{height: hp(7), width: wp(80)}}
                 className="bg-red-500 flex items-center justify-center mx-auto rounded-full border-[2px] border-neutral-200"
             >

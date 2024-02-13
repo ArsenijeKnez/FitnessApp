@@ -10,11 +10,8 @@ export default function _layout() {
             headerShown: false
         }}
     >
-      <Stack.Screen name="exercises" options={{
+      <Stack.Screen name="menuRouter" options={{
         presentation: 'fullScreenModal'
-      }} />
-      <Stack.Screen name="exerciseDetails" options={{
-        presentation: 'modal'
       }} />
     </Stack>
   )
