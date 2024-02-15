@@ -33,7 +33,7 @@ export default function Home() {
 
         <View className="flex justify-center items-center space-y-2 mx-4">
             <TouchableOpacity
-                onPress={()=> router.push('profile')}>
+                onPress={()=> router.push('appText')}>
               <Image 
                   source={require('../assets/images/logo1.png')}
                   style={{height: hp(12.5), width: hp(17)}} 

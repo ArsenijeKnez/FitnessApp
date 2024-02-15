@@ -4,9 +4,15 @@ import React, { useState } from 'react'
 
 
 export default function Exercises() {
-  const [exercise, setExercise] = useState('');
-  const handleExerciseChange = (inputValue) => {
-    setExercise(inputValue.trim());
+  const [exerciseName, setExerciseName] = useState('');
+  const [exercisePR, setExercisePR] = useState('');
+
+  const handleExerciseNameChange = (inputValue) => {
+    setExerciseName(inputValue.trim());
+  };
+
+  const handleExercisePRChange = (inputValue) => {
+    setExercisePR(inputValue.trim());
   };
   
   return (
@@ -14,8 +20,14 @@ export default function Exercises() {
       <TextInput
           style={{ height: 50, width: 200, borderColor: 'gray', borderWidth: 1, marginBottom: 30, marginTop: 40, padding: 10 }}
           placeholder="Exercise name"
-          onChangeText={handleExerciseChange}
-          value={exercise}
+          onChangeText={handleExerciseNameChange}
+          value={exerciseName}
+        />
+      <TextInput
+          style={{ height: 50, width: 200, borderColor: 'gray', borderWidth: 1, marginBottom: 30, marginTop: 40, padding: 10 }}
+          placeholder="Exercise personal record"
+          onChangeText={handleExercisePRChange}
+          value={exercisePR}
         />
     </View>
   )
