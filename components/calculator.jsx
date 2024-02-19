@@ -34,14 +34,14 @@ export default function Calculator() {
     <View>
       <View style={{flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
         <TextInput
-          style={{ height: 50, width: 100, borderColor: 'gray', borderWidth: 1, marginRight: 20, marginTop: 40, marginBottom: 30, padding: 10 }}
+          style={{ height: 50, width: 100, backgroundColor: 'white', borderRadius: 8, marginRight: 20, marginTop: 40, marginBottom: 30, padding: 10,elevation: 6 }}
           placeholder="Weight"
           keyboardType="numeric"
           onChangeText={handleWeightChange}
           value={weight}
         />
         <TextInput
-          style={{ height: 50, width: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 30, marginTop: 40, padding: 10 }}
+          style={{ height: 50, width: 100, backgroundColor: 'white', borderRadius: 8, marginBottom: 30, marginTop: 40, padding: 10 ,elevation: 6}}
           placeholder="Reps"
           keyboardType="numeric"
           onChangeText={handleRepsChange}
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 16,
     borderRadius: 4,
-    elevation: 14,
+    elevation: 6,
     backgroundColor: 'gray',
   },
   buttonText: {
