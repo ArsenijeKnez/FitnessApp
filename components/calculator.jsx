@@ -21,7 +21,7 @@ export default function Calculator() {
       return;
     }
     if (!/^\d+$/.test(reps) || !/^\d+$/.test(weight)){
-      Alert.alert('Invalid Input', "Enter numbers only");
+      Alert.alert('Invalid Input', "Enter round numbers only");
       return;
     }
     if(reps > 10){

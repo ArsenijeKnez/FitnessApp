@@ -17,10 +17,10 @@ export default function AppText() {
 
         <TouchableOpacity
             onPress={()=> router.back()}
-            className="bg-rose-500 mx-4 absolute flex justify-center items-center pr-1 rounded-full"
+            className="mx-4 absolute flex justify-center items-center pr-1"
             style={{height: hp(5.5), width: hp(5.5), marginTop: hp(7)}}
         >
-                 <Ionicons name="caret-back-outline" size={hp(4)} color="white" />
+                 <Ionicons name="arrow-back" size={hp(6)} color="black" />
         </TouchableOpacity>
 
        
