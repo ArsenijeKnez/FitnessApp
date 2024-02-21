@@ -14,7 +14,6 @@ export default function Home() {
   return (
     <SafeAreaView className="flex-1 bg-white flex space-y-5" edges={['top']} >
       <StatusBar style="dark" /> 
-      {/* Logo & motive */}
       <View className="flex-row justify-between items-center mx-5">
         <View className="space-y-2">
             <Text

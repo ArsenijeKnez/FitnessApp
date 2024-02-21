@@ -1,6 +1,7 @@
-import { View, Text, FlatList,TextInput, Alert, Pressable, TouchableOpacity } from 'react-native'
+import { RefreshControl, View, Text, FlatList,TextInput, Alert, Pressable, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react'
+import { getData,fetchData, storeData, clearAllData,removeData } from '../database/exerciseDB';
 
 
 export default function Exercises() {
@@ -9,17 +10,7 @@ export default function Exercises() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const keyValuePair = await AsyncStorage.multiGet(keys);
-        setData(keyValuePair);
-      } catch (e) {
-        console.error('Failed to fetch data:', e);
-      }
-    };
-
-    fetchData();
+    fetchData(setData);
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
@@ -39,47 +30,18 @@ export default function Exercises() {
       Alert.alert('Invalid Input', "Enter pr weight in round numbers only");
       return;
     }
-    clearAllData();
     storeData(exerciseName, exercisePR);
     setExerciseName('');
     setExercisePR('');
   };
-  
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(
-        key,
-        value,
-      );
-    } catch (error) {
-      Alert.alert('Error', "Unknown error");
-      console.log(error);
-    }
-  };
 
-  const getData = async (key) => {
-    try {
-      const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
-        return value;
-      }
-    } catch (e) {
-      Alert.alert('Error', "Unknown error");
-      console.log(error)
-    }
-  };
-
-  const clearAllData = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (e) {
-      console.error('Failed to clear data:', e);
-    }
+  const handleDelete = (key) => {
+    removeData(key);
   };
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20}}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>New Exercise</Text>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Add or update exercise</Text>
       <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 20, width: '100%', paddingHorizontal: 10, elevation: 6 }}>
         <TextInput
           style={{ height: 50, padding: 10 }}
@@ -107,9 +69,16 @@ export default function Exercises() {
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 }}>
-            <Text style={{ fontSize: 16 }}>{item[0]}</Text>
-            <Text style={{ fontSize: 14, color: '#6b7280' }}>{item[1]}</Text>
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item[0]}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {item[1]}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDelete(item[0])}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
           </View>
         )}
         keyExtractor={(item) => item[0]}
