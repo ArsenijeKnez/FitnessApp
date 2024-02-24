@@ -30,7 +30,27 @@ export default function Exercises() {
       Alert.alert('Invalid Input', "Enter pr weight in round numbers only");
       return;
     }
-    storeData(exerciseName, exercisePR);
+    const Exercise = getData(exerciseName);
+    console.log(Exercise);
+    const currentDate = new Date().toISOString().split('T')[0];
+    if(Exercise == null)
+    {
+      console.log('A!');
+      Exercise = {
+        name: exerciseName,
+        exerciseType: 'Free Weight',
+        records: [
+          { date: currentDate, record: 100 },
+        ],
+      };
+    }
+    else
+    {
+      Exercise = JSON.parse(Exercise);
+      Exercise.records.push({date: currentDate, record: exercisePR});
+    }
+    exerciseString = JSON.stringify(Exercise);
+    storeData(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
   };

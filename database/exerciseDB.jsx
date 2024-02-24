@@ -29,6 +29,7 @@ export const getData = async (key) => {
       if (value !== null) {
         return value;
       }
+      else return 'empty';
     } catch (e) {
       Alert.alert('Error', "Unknown error");
       console.log(error)
