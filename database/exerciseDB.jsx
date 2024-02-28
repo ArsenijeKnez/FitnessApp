@@ -26,10 +26,12 @@ export const storeData = async (key, value) => {
 export const getData = async (key) => {
     try {
       const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
+      if (value === 'null') {
+        return 'empty';
+      } else if (value !== null) {
         return value;
       }
-      else return 'empty';
+      return 'empty';
     } catch (e) {
       Alert.alert('Error', "Unknown error");
       console.log(error)

@@ -8,13 +8,27 @@ export default function Exercises() {
   const [exerciseName, setExerciseName] = useState('');
   const [exercisePR, setExercisePR] = useState('');
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
     fetchData(setData);
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
     setExerciseName(inputValue.trim());
+  };
+
+  const getRecord = (values) =>{
+    
+    Exercise = JSON.parse(values);
+    const records = Exercise.records;
+    let maxRecord = null;
+    records.forEach((record) => {
+      console.log(record.record);
+    if (maxRecord === null || record.record > maxRecord) {
+      maxRecord = record.record;
+    }
+    });
+    return maxRecord;
   };
 
   const handleExercisePRChange = (inputValue) => {
@@ -30,22 +44,22 @@ export default function Exercises() {
       Alert.alert('Invalid Input', "Enter pr weight in round numbers only");
       return;
     }
-    const Exercise = getData(exerciseName);
-    console.log(Exercise);
-    const currentDate = new Date().toISOString().split('T')[0];
-    if(Exercise == null)
-    {
-      console.log('A!');
-      Exercise = {
-        name: exerciseName,
-        exerciseType: 'Free Weight',
-        records: [
-          { date: currentDate, record: 100 },
-        ],
-      };
-    }
-    else
-    {
+    getData(exerciseName).then((result) => {
+      Exercise = result;
+      console.log(Exercise);
+      const currentDate = new Date().toISOString().split('T')[0];
+      if(Exercise == 'empty')
+      {
+        Exercise = {
+          name: exerciseName,
+          exerciseType: 'Free Weight',
+          records: [
+            { date: currentDate, record: exercisePR },
+          ],
+        };
+      }
+      else
+      {
       Exercise = JSON.parse(Exercise);
       Exercise.records.push({date: currentDate, record: exercisePR});
     }
@@ -53,6 +67,7 @@ export default function Exercises() {
     storeData(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
+    });
   };
 
   const handleDelete = (key) => {
@@ -92,7 +107,7 @@ export default function Exercises() {
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
               <Text style={{ fontSize: 16 }}>Exercise: {item[0]}</Text>
-              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {item[1]}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item[1])}</Text>
             </View>
             <Pressable 
               onPress={() => handleDelete(item[0])}
