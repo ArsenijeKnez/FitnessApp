@@ -1,16 +1,21 @@
 import { RefreshControl, View, Text, FlatList,TextInput, Alert, Pressable, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react'
+import { RadioButton } from 'react-native-paper'; 
 import { getData,fetchData, storeData, clearAllData,removeData } from '../database/exerciseDB';
 
 
 export default function Exercises() {
   const [exerciseName, setExerciseName] = useState('');
   const [exercisePR, setExercisePR] = useState('');
-  const [data, setData] = useState([]);
+  const [data1, setData1] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [data3, setData3] = useState([]);
+  const [data4, setData4] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('Free Weight'); 
   
   useEffect(() => {
-    fetchData(setData);
+    fetchData(setData1, setData2, setData3, setData4);
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
@@ -18,12 +23,10 @@ export default function Exercises() {
   };
 
   const getRecord = (values) =>{
-    
     Exercise = JSON.parse(values);
     const records = Exercise.records;
     let maxRecord = null;
     records.forEach((record) => {
-      console.log(record.record);
     if (maxRecord === null || record.record > maxRecord) {
       maxRecord = record.record;
     }
@@ -46,13 +49,12 @@ export default function Exercises() {
     }
     getData(exerciseName).then((result) => {
       Exercise = result;
-      console.log(Exercise);
       const currentDate = new Date().toISOString().split('T')[0];
       if(Exercise == 'empty')
       {
         Exercise = {
           name: exerciseName,
-          exerciseType: 'Free Weight',
+          exerciseType: selectedValue,
           records: [
             { date: currentDate, record: exercisePR },
           ],
@@ -61,17 +63,20 @@ export default function Exercises() {
       else
       {
       Exercise = JSON.parse(Exercise);
+      Exercise.exerciseType = selectedValue;
       Exercise.records.push({date: currentDate, record: exercisePR});
     }
     exerciseString = JSON.stringify(Exercise);
     storeData(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
+    fetchData(setData1, setData2, setData3, setData4);
     });
   };
 
   const handleDelete = (key) => {
     removeData(key);
+    fetchData(setData1, setData2, setData3, setData4);
   };
 
   return (
@@ -88,21 +93,67 @@ export default function Exercises() {
       <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 20, width: '100%', paddingHorizontal: 10, elevation: 6 }}>
         <TextInput
           style={{ height: 50, padding: 10 }}
-          placeholder="Exercise personal record"
+          placeholder="Personal record (weight/reps/min)"
           keyboardType="numeric"
           onChangeText={handleExercisePRChange}
           value={exercisePR}
         />
       </View>
+      <View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <RadioButton.Android 
+              value="Free Weight"
+              status={selectedValue === 'Free Weight' ? 'checked' : 'unchecked'} 
+              onPress={() => setSelectedValue('Free Weight')} 
+              color="#007BFF"
+            /> 
+            <Text> 
+              Free Weight
+            </Text>    
+            <RadioButton.Android 
+              value="Body Weight"
+              status={selectedValue === 'Body Weight' ? 'checked' : 'unchecked'} 
+              onPress={() => setSelectedValue('Body Weight')} 
+              color="#007BFF"
+            /> 
+            <Text> 
+              Body Weight
+            </Text>  
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <View style={{flexDirection: "row",alignItems: 'center'}}>
+            <RadioButton.Android 
+              value="Machine"
+              status={selectedValue === 'Machine' ? 'checked' : 'unchecked'} 
+              onPress={() => setSelectedValue('Machine')} 
+              color="#007BFF"
+            /> 
+            <Text> 
+              Machine
+            </Text>     
+            </View>
+            <View style={{flexDirection: "row", alignItems: 'center', marginLeft: 19}}>
+            <RadioButton.Android
+              value="Cardio"
+              status={selectedValue === 'Cardio' ? 'checked' : 'unchecked'} 
+              onPress={() => setSelectedValue('Cardio')} 
+              color="#007BFF"
+            /> 
+            <Text> 
+              Cardio
+            </Text>      
+            </View>
+          </View>
+      </View>
       <Pressable
-        style={{ backgroundColor: 'gray', paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
+        style={{ backgroundColor: 'gray', marginTop: 10, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
         onPress={handleSubmit}
       >
         <Text style={{ color: 'white', fontSize: 18 }}>Submit</Text>
       </Pressable>
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Your Exercises</Text>
       <FlatList
-        data={data}
+        data={data1}
         renderItem={({ item }) => (
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>

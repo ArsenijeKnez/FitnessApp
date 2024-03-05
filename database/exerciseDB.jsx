@@ -1,11 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const fetchData = async (setData) => {
+export const fetchData = async (setData1, setData2, setData3, setData4) => {
     try {
       const keys = await AsyncStorage.getAllKeys();
       const keyValuePair = await AsyncStorage.multiGet(keys);
-      setData(keyValuePair);
+      keyValuePair.forEach(([key, value]) => {
+        const exerciseData = JSON.parse(value);
+        if (exerciseData.exerciseType === "Free Weight") {
+          setData1([key, value]);
+        }
+        else if(exerciseData.exerciseType === "Body Weight"){
+          setData2([key, value]);
+        }
+        else if(exerciseData.exerciseType === "Machine"){
+          setData3([key, value]);
+        }
+        else if(exerciseData.exerciseType === "Cardio"){
+          setData4([key, value]);
+        }
+      });
     } catch (e) {
       console.error('Failed to fetch data:', e);
     }
