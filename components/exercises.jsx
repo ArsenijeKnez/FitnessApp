@@ -13,9 +13,10 @@ export default function Exercises() {
   const [data3, setData3] = useState([]);
   const [data4, setData4] = useState([]);
   const [selectedValue, setSelectedValue] = useState('Free Weight'); 
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    fetchData(setData1, setData2, setData3, setData4);
+    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
@@ -70,13 +71,13 @@ export default function Exercises() {
     storeData(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
-    fetchData(setData1, setData2, setData3, setData4);
+    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
     });
   };
 
   const handleDelete = (key) => {
     removeData(key);
-    fetchData(setData1, setData2, setData3, setData4);
+    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
   };
 
   return (
@@ -152,22 +153,99 @@ export default function Exercises() {
         <Text style={{ color: 'white', fontSize: 18 }}>Submit</Text>
       </Pressable>
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Your Exercises</Text>
+
       <FlatList
         data={data1}
-        renderItem={({ item }) => (
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Free Weight</Text>
+           )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item[0]}</Text>
-              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item[1])}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDelete(item[0])}
+              onPress={() => handleDelete(item.key)}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>
           </View>
+          </View>
         )}
-        keyExtractor={(item) => item[0]}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+      <FlatList
+        data={data2}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Body Weight</Text>
+           )}
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDelete(item.key)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+          </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+
+      <FlatList
+        data={data3}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Machine</Text>
+           )}
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDelete(item.key)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+          </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+
+      <FlatList
+        data={data4}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Cardio</Text>
+           )}
+            <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDelete(item.key)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+            </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
         style={{ width: '100%' }}
       />
     </View>
