@@ -13,10 +13,9 @@ export default function Exercises() {
   const [data3, setData3] = useState([]);
   const [data4, setData4] = useState([]);
   const [selectedValue, setSelectedValue] = useState('Free Weight'); 
-  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
+    fetchData(setData1, setData2, setData3, setData4);
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
@@ -71,13 +70,13 @@ export default function Exercises() {
     storeData(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
-    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
+    fetchData(setData1, setData2, setData3, setData4);
     });
   };
 
   const handleDelete = (key) => {
     removeData(key);
-    fetchData(setData1, setData2, setData3, setData4).then(() => {setLoading(false); });
+    fetchData(setData1, setData2, setData3, setData4);
   };
 
   return (

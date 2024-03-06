@@ -1,18 +1,66 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, FlatList,Pressable, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { LineChart } from 'react-native-chart-kit';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { getData,fetchData, storeData, clearAllData,removeData } from '../database/exerciseDB';
 
 
 export default function Progress() {
-  const data = {
-    labels: ['Feb 1', 'Feb 2', 'Feb 3', 'Feb 4', 'Feb 5', 'Feb 6'], // Use your actual dates here
-    datasets: [
-      {
-        data: [50, 55, 52, 60, 58, 62], // Use your actual records here
-      },
-    ],
+
+  const [data, setData] = useState({ labels: ['Feb 1', 'Feb 2', 'Feb 3', 'Feb 4', 'Feb 5', 'Feb 6'], datasets: [{ data: [50, 55, 52, 60, 58, 62] }] });
+  const [data1, setData1] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [data3, setData3] = useState([]);
+  const [data4, setData4] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetchData(setData1, setData2, setData3, setData4).then(() => {
+    //const value= JSON.parse(data1[0].value);
+    //const records = value.records;
+    //console.log(records);
+    //const exerciseData = {
+    //  labels: records.map((record) => record.date),
+    //    datasets: [
+    //      {
+    //        data: records.map((record) => record.record),
+    //      },
+    //    ],
+    //};
+    //setData(exerciseData);
+  });
+  }, []);
+
+  const handleDisplay = (displayData) => {
+    console.log(displayData.value);
+    const value = JSON.parse(displayData.value);
+    const records = value.records;
+    console.log(records);
+    if(records.length > 1 ){
+    const exerciseData = {
+      labels: records.map((record) => record.date),
+        datasets: [
+          {
+            data: records.map((record) => record.record),
+          },
+        ],
+    };
+    setData(exerciseData);
+    }
+    else{
+      const exerciseData = {
+        labels: ['start', records[0].date],
+          datasets: [
+            {
+              data: ['0',records[0].record],
+            },
+          ],
+      };
+      setData(exerciseData);
+    }
+
   };
+
   return (
 <View>
       <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 20 }}>Exercise Records</Text>
@@ -43,6 +91,101 @@ export default function Progress() {
           borderRadius: 16,
         }}
       />
+
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20, alignSelf: "center" }}>All Exercises:</Text>
+
+      <FlatList
+        data={data1}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Free Weight</Text>
+           )}
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDisplay(item)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+          </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+      <FlatList
+        data={data2}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Body Weight</Text>
+           )}
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDisplay(item)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+          </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+
+      <FlatList
+        data={data3}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Machine</Text>
+           )}
+          <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDisplay(item)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+          </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+
+      <FlatList
+        data={data4}
+        renderItem={({ item ,index}) => (
+          <View>
+           {index === 0 && (
+            <Text style={{ fontSize: 14, marginBottom: 6, marginLeft: 5, alignSelf: "flex-start" }}>Cardio</Text>
+           )}
+            <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
+            <View>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+            </View>
+            <Pressable 
+              onPress={() => handleDisplay(item)}
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+            </Pressable>
+            </View>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        style={{ width: '100%' }}
+      />
+
     </View>
+    
   )
 }
