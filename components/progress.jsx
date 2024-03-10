@@ -12,6 +12,7 @@ export default function Progress() {
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);
   const [data4, setData4] = useState([]);
+  const [type, setType] = useState("");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -32,10 +33,18 @@ export default function Progress() {
   }, []);
 
   const handleDisplay = (displayData) => {
-    console.log(displayData.value);
     const value = JSON.parse(displayData.value);
     const records = value.records;
-    console.log(records);
+    //const Etype = value.exerciseType;
+    if(value.exerciseType == "Cardio"){
+      setType(" min");
+    }
+    else if(value.exerciseType == "Body Weight"){
+      setType(" reps");
+    }
+    else{
+      setType(" kg");
+    }
     if(records.length > 1 ){
       if(records.length < 5){
       const exerciseData = {
@@ -84,7 +93,7 @@ export default function Progress() {
         data={data}
         width={wp(90)}
         height={220}
-        yAxisSuffix="kg"
+        yAxisSuffix={type}
         chartConfig={{
           backgroundColor: '#e6f7e9',
           backgroundGradientFrom: '#e6f7e9',

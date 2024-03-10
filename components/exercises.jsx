@@ -75,12 +75,93 @@ export default function Exercises() {
   };
 
   const handleDelete = (key) => {
-    removeExercise(key);
-    fetchExercises(setData1, setData2, setData3, setData4);
+    removeExercise(key).then(() => {
+      fetchExercises(setData1, setData2, setData3, setData4);
+    });
   };
 
   const handleRemoveAll= () => {
+    clearAllData().then(() => {
+      fetchExercises(setData1, setData2, setData3, setData4);
+    });
+  };
+
+  const handleLoadTest= () => {
     clearAllData();
+
+      const exerciseData1 = {
+        name: 'Push-ups',
+        exerciseType: 'Body Weight',
+        records: [
+          { date: '2024-02-26', record: 30 },
+          { date: '2024-02-27', record: 32 },
+          { date: '2024-02-28', record: 35 },
+        ],
+      };
+      exerciseString = JSON.stringify(exerciseData1);
+      storeExercise('Push-ups', exerciseString);
+    
+    
+      const exerciseData2 = {
+          name: 'Bench Press',
+          exerciseType: 'Free Weight',
+          records: [
+              { date: '2024-02-26', record: 150 },
+              { date: '2024-02-27', record: 155 },
+              { date: '2024-02-28', record: 160 },
+          ],
+      };
+      exerciseString = JSON.stringify(exerciseData2);
+      storeExercise('Bench Press', exerciseString);
+    
+      const exerciseData3 = {
+          name: 'Running',
+          exerciseType: 'Cardio',
+          records: [
+              { date: '2024-02-26', record: 30 },
+              { date: '2024-02-27', record: 32 },
+              { date: '2024-02-28', record: 35 },
+          ],
+      };
+      exerciseString = JSON.stringify(exerciseData3);
+      storeExercise('Running', exerciseString);
+    
+      const exerciseData4 = {
+        name: 'Squats',
+        exerciseType: 'Free Weight',
+        records: [
+            { date: '2024-02-26', record: 100 },
+            { date: '2024-02-27', record: 105 },
+            { date: '2024-02-28', record: 110 },
+        ],
+    };
+    exerciseString = JSON.stringify(exerciseData4);
+    storeExercise('Squats', exerciseString);
+
+    const exerciseData5 = {
+        name: 'Pull-ups',
+        exerciseType: 'Body Weight',
+        records: [
+            { date: '2024-02-26', record: 15 },
+            { date: '2024-02-27', record: 16 },
+            { date: '2024-02-28', record: 17 },
+        ],
+    };
+    exerciseString = JSON.stringify(exerciseData5);
+    storeExercise('Pull-ups', exerciseString);
+
+    const exerciseData6 = {
+      name: 'Cycling',
+      exerciseType: 'Cardio',
+      records: [
+          { date: '2024-02-26', record: 20 },
+          { date: '2024-02-27', record: 22 },
+          { date: '2024-02-28', record: 25 },
+      ],
+    };
+    exerciseString = JSON.stringify(exerciseData6);
+    storeExercise('Cycling', exerciseString);
+
     fetchExercises(setData1, setData2, setData3, setData4);
   };
 
@@ -253,10 +334,16 @@ export default function Exercises() {
         style={{ width: '100%' }}
       />
       <Pressable
+        style={{ backgroundColor: '#55B881', marginTop: 30, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
+        onPress={handleLoadTest}
+      >
+        <Text style={{ color: 'white', fontSize: 18 }}>Load Test Data</Text>
+      </Pressable>
+      <Pressable
         style={{ backgroundColor: 'red', marginTop: 30, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
         onPress={handleRemoveAll}
       >
-        <Text style={{ color: 'white', fontSize: 18 }}>Remove all exercises</Text>
+        <Text style={{ color: 'white', fontSize: 18 }}>Remove all data</Text>
       </Pressable>
     </View>
 

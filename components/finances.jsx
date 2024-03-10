@@ -72,18 +72,18 @@ export default function Finances() {
         style={{ backgroundColor: '#55B881', paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20 }}
         onPress={handleAddPurchase}
       >
-        <Text style={{ color: 'white', fontSize: 18 }}>Add Purchase</Text>
+        <Text style={{ color: 'white', fontSize: 18 }}>Add Expense</Text>
       </Pressable>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Your Purchases</Text>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Previous</Text>
       <FlatList
         data={purchases}
         renderItem={({ item ,index}) => (
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Expense: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Expense: {item[0].substring(1)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDeletePurchase(item.key)}
+              onPress={() => handleDeletePurchase(item[0].substring(1))}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>

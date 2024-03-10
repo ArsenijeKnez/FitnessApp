@@ -13,9 +13,15 @@ export default function Planner() {
     Saturday: [],
     Sunday: [],
   });
+  const [currentPlan, setCurrentPlan] = useState(null);
 
   useEffect(() => {
     fetchExerciseNames(setExerciseNames);
+    getPlan('pPlan').then((plan) => {
+      if (plan) {
+        setCurrentPlan(JSON.parse(plan));
+      }
+    });
   }, []);
 
   const handleExerciseSelection = (day, exerciseName) => {
@@ -29,9 +35,10 @@ export default function Planner() {
   };
 
   const handleSubmit = () => {
-    //removePlan();
     const selectedExercisesString = JSON.stringify(selectedExercises);
-    storePlan('pPlan', selectedExercisesString)
+    storePlan('pPlan', selectedExercisesString).then(() => {
+      setCurrentPlan(selectedExercises);
+    });
   };
 
   const renderDay = (day) => {
@@ -59,8 +66,41 @@ export default function Planner() {
     );
   };
 
+  const renderCurrentPlan = () => {
+    if (!currentPlan) {
+      return null;
+    }
+  
+    return (
+      <FlatList
+        data={Object.entries(currentPlan)}
+        renderItem={({ item }) => (
+          <View style={styles.currentPlanContainer}>
+            <Text style={styles.currentPlanDay}>{item[0]}</Text>
+            {item[1].length === 0 ? (
+              <Text style={styles.currentPlanExercise}>Rest day</Text>
+            ) : (
+              <FlatList
+                data={item[1]}
+                renderItem={({ item }) => (
+                  <Text style={styles.currentPlanExercise}>{item}</Text>
+                )}
+                keyExtractor={(item) => item}
+              />
+            )}
+          </View>
+        )}
+        keyExtractor={(item) => item[0]}
+      />
+    );
+  };
+
   return (
     <View>  
+      <View>
+        <Text style={styles.text}>Current Plan</Text>
+        {renderCurrentPlan()}
+      </View>
       <Text style={styles.text}>
         Select exercises you want to complete for each day of the week
       </Text>
@@ -68,11 +108,12 @@ export default function Planner() {
         {Object.keys(selectedExercises).map((day) => renderDay(day))}
       </View>
       <Pressable title="Submit" onPress={handleSubmit} style={styles.button}>
-          <Text style={styles.buttonText}>Submit plan</Text>
-        </Pressable>
+        <Text style={styles.buttonText}>Submit plan</Text>
+      </Pressable>
     </View>
   );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -97,5 +138,18 @@ const styles = StyleSheet.create({
     marginTop : 15,
     fontSize: 22,
     color: "black",
+  },
+  currentPlanContainer: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  currentPlanDay: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  currentPlanExercise: {
+    marginLeft: 10,
   },
 });

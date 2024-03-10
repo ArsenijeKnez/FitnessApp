@@ -36,7 +36,6 @@ function DetermineFunction({param}) {
 export default function Router() {
     const router = useRouter();
     const item = useLocalSearchParams();
-    // console.log('got item: ', item);
 
   return (
     <ScrollView>
@@ -56,7 +55,6 @@ export default function Router() {
             className="rounded-[25px]"
         />
 
-        {/* exercises */}
         <View className="mx-4 space-y-3 mt-4">
             <Text style={{fontSize: hp(3)}} className="font-semibold text-neutral-700">
                 {item.name}
