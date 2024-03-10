@@ -1,15 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const fetchData = async (setData1, setData2, setData3, setData4) => {
+export const fetchExercises = async (setData1, setData2, setData3, setData4) => {
     try {
-      const keys = await AsyncStorage.getAllKeys();
+      const Allkeys = await AsyncStorage.getAllKeys();
+      const keys = Allkeys.filter(key => key.startsWith('e')) 
       const keyValuePair = await AsyncStorage.multiGet(keys);
       const data1 = [];
       const data2 = [];
       const data3 = [];
       const data4 = [];
       keyValuePair.forEach(([key, value]) => {
+  
         const exerciseData = JSON.parse(value);
         if (exerciseData.exerciseType === "Free Weight") {
           data1.push({ key, value });
@@ -34,9 +36,18 @@ export const fetchData = async (setData1, setData2, setData3, setData4) => {
     }
   };
 
+  export const fetchExerciseNames = async (setExerciseNames) => {
+    const Allkeys = await AsyncStorage.getAllKeys();
+    const keys = Allkeys.filter(key => key.startsWith('e'));
+    const keyValuePair = await AsyncStorage.multiGet(keys);
+    const exerciseNames = keyValuePair.map(([key, value]) => key.substring(1));
+    setExerciseNames(exerciseNames);
+  };
+
   export const fetchExpense = async (setPurchases) => {
     try {
-      const keys = await AsyncStorage.getAllKeys();
+      const Allkeys = await AsyncStorage.getAllKeys();
+      const keys = Allkeys.filter(key => key.startsWith('p')) 
       const keyValuePair = await AsyncStorage.multiGet(keys);
       
       setPurchases(keyValuePair);
@@ -45,11 +56,23 @@ export const fetchData = async (setData1, setData2, setData3, setData4) => {
     }
   };
 
+  export const fetchPlan = async (setPlan) => {
+    try {
+      const Allkeys = await AsyncStorage.getAllKeys();
+      const keys = Allkeys.filter(key => key.startsWith('w')) 
+      const keyValuePair = await AsyncStorage.multiGet(keys);
+      
+      setPlan(keyValuePair);
+    } catch (e) {
+      console.error('Failed to fetch data:', e);
+    }
+  };
 
-export const storeData = async (key, value) => {
+
+export const storeExercise = async (key, value) => {
     try {
       await AsyncStorage.setItem(
-        key,
+        'e'+key,
         value,
       );
     } catch (error) {
@@ -58,9 +81,63 @@ export const storeData = async (key, value) => {
     }
   };
 
-export const getData = async (key) => {
+export const storePlan = async (key, value) => {
     try {
-      const value = await AsyncStorage.getItem(key);
+      await AsyncStorage.setItem(
+        'w'+key,
+        value,
+      );
+    } catch (error) {
+      Alert.alert('Error', "Unknown error");
+      console.log(error);
+    }
+  };
+
+  export const storeExpense = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(
+        'p'+key,
+        value,
+      );
+    } catch (error) {
+      Alert.alert('Error', "Unknown error");
+      console.log(error);
+    }
+  };
+
+export const getExercise = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem('e'+key);
+      if (value === 'null') {
+        return 'empty';
+      } else if (value !== null) {
+        return value;
+      }
+      return 'empty';
+    } catch (e) {
+      Alert.alert('Error', "Unknown error");
+      console.log(error)
+    }
+  };
+
+export const getExpense = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem('p'+key);
+      if (value === 'null') {
+        return 'empty';
+      } else if (value !== null) {
+        return value;
+      }
+      return 'empty';
+    } catch (e) {
+      Alert.alert('Error', "Unknown error");
+      console.log(error)
+    }
+  };
+
+export const getPlan = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem('w'+key);
       if (value === 'null') {
         return 'empty';
       } else if (value !== null) {
@@ -82,9 +159,27 @@ export const clearAllData = async () => {
     }
   };
 
-export const removeData = async (key) => {
+export const removeExercise = async (key) => {
     try {
-      await AsyncStorage.removeItem(key);
+      await AsyncStorage.removeItem('e'+key);
+    } catch (e) {
+      Alert.alert('Error', "Unknown error");
+      console.error('Failed to remove data:', e);
+    }
+  };
+
+  export const removePlan = async (key) => {
+    try {
+      await AsyncStorage.removeItem('w'+key);
+    } catch (e) {
+      Alert.alert('Error', "Unknown error");
+      console.error('Failed to remove data:', e);
+    }
+  };
+
+  export const removeExpense = async (key) => {
+    try {
+      await AsyncStorage.removeItem('p'+key);
     } catch (e) {
       Alert.alert('Error', "Unknown error");
       console.error('Failed to remove data:', e);

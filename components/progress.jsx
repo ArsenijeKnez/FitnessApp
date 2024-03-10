@@ -2,12 +2,12 @@ import { View, Text, FlatList,Pressable, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { LineChart } from 'react-native-chart-kit';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { getData,fetchData, storeData, clearAllData,removeData } from '../database/exerciseDB';
+import { getExercise,fetchExercises, storeExercise, clearAllData,removeExercise } from '../database/exerciseDB';
 
 
 export default function Progress() {
 
-  const [data, setData] = useState({ labels: ['Feb 1', 'Feb 2', 'Feb 3', 'Feb 4', 'Feb 5', 'Feb 6'], datasets: [{ data: [50, 55, 52, 60, 58, 62] }] });
+  const [data, setData] = useState({ labels: ['', ''], datasets: [{ data: [0, 0] }] });
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);
@@ -15,7 +15,7 @@ export default function Progress() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    fetchData(setData1, setData2, setData3, setData4).then(() => {
+    fetchExercises(setData1, setData2, setData3, setData4).then(() => {
     //const value= JSON.parse(data1[0].value);
     //const records = value.records;
     //console.log(records);
@@ -119,7 +119,7 @@ export default function Progress() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
@@ -141,7 +141,7 @@ export default function Progress() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
@@ -164,7 +164,7 @@ export default function Progress() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
@@ -187,7 +187,7 @@ export default function Progress() {
            )}
             <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}

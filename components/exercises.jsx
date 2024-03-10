@@ -2,7 +2,7 @@ import { RefreshControl, View, Text, FlatList,TextInput, Alert, Pressable, Touch
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react'
 import { RadioButton } from 'react-native-paper'; 
-import { getData,fetchData, storeData, clearAllData,removeData } from '../database/exerciseDB';
+import { getExercise, fetchExercises, storeExercise, clearAllData,removeExercise } from '../database/exerciseDB';
 
 
 export default function Exercises() {
@@ -15,7 +15,7 @@ export default function Exercises() {
   const [selectedValue, setSelectedValue] = useState('Free Weight'); 
   
   useEffect(() => {
-    fetchData(setData1, setData2, setData3, setData4);
+    fetchExercises(setData1, setData2, setData3, setData4);
   }, []);
 
   const handleExerciseNameChange = (inputValue) => {
@@ -44,10 +44,10 @@ export default function Exercises() {
       return;
     }
     if (!/^\d+$/.test(exercisePR)){
-      Alert.alert('Invalid Input', "Enter pr weight in round numbers only");
+      Alert.alert('Invalid Input', "Enter max weight/reps/min in round numbers only");
       return;
     }
-    getData(exerciseName).then((result) => {
+    getExercise(exerciseName).then((result) => {
       Exercise = result;
       const currentDate = new Date().toISOString().split('T')[0];
       if(Exercise == 'empty')
@@ -67,16 +67,21 @@ export default function Exercises() {
       Exercise.records.push({date: currentDate, record: exercisePR});
     }
     exerciseString = JSON.stringify(Exercise);
-    storeData(exerciseName, exerciseString);
+    storeExercise(exerciseName, exerciseString);
     setExerciseName('');
     setExercisePR('');
-    fetchData(setData1, setData2, setData3, setData4);
+    fetchExercises(setData1, setData2, setData3, setData4);
     });
   };
 
   const handleDelete = (key) => {
-    removeData(key);
-    fetchData(setData1, setData2, setData3, setData4);
+    removeExercise(key);
+    fetchExercises(setData1, setData2, setData3, setData4);
+  };
+
+  const handleRemoveAll= () => {
+    clearAllData();
+    fetchExercises(setData1, setData2, setData3, setData4);
   };
 
   return (
@@ -105,7 +110,7 @@ export default function Exercises() {
               value="Free Weight"
               status={selectedValue === 'Free Weight' ? 'checked' : 'unchecked'} 
               onPress={() => setSelectedValue('Free Weight')} 
-              color="#007BFF"
+              color='#55B881'
             /> 
             <Text> 
               Free Weight
@@ -114,7 +119,7 @@ export default function Exercises() {
               value="Body Weight"
               status={selectedValue === 'Body Weight' ? 'checked' : 'unchecked'} 
               onPress={() => setSelectedValue('Body Weight')} 
-              color="#007BFF"
+              color='#55B881'
             /> 
             <Text> 
               Body Weight
@@ -126,7 +131,7 @@ export default function Exercises() {
               value="Machine"
               status={selectedValue === 'Machine' ? 'checked' : 'unchecked'} 
               onPress={() => setSelectedValue('Machine')} 
-              color="#007BFF"
+              color='#55B881'
             /> 
             <Text> 
               Machine
@@ -137,7 +142,7 @@ export default function Exercises() {
               value="Cardio"
               status={selectedValue === 'Cardio' ? 'checked' : 'unchecked'} 
               onPress={() => setSelectedValue('Cardio')} 
-              color="#007BFF"
+              color='#55B881'
             /> 
             <Text> 
               Cardio
@@ -162,11 +167,11 @@ export default function Exercises() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
               <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDelete(item.key)}
+              onPress={() => handleDelete(item.key.substring(1))}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>
@@ -185,11 +190,11 @@ export default function Exercises() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
               <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDelete(item.key)}
+              onPress={() => handleDelete(item.key.substring(1))}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>
@@ -209,11 +214,11 @@ export default function Exercises() {
            )}
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
               <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDelete(item.key)}
+              onPress={() => handleDelete(item.key.substring(1))}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>
@@ -233,11 +238,11 @@ export default function Exercises() {
            )}
             <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
-              <Text style={{ fontSize: 16 }}>Exercise: {item.key}</Text>
+              <Text style={{ fontSize: 16 }}>Exercise: {item.key.substring(1)}</Text>
               <Text style={{ fontSize: 14, color: '#6b7280' }}>PR: {getRecord(item.value)}</Text>
             </View>
             <Pressable 
-              onPress={() => handleDelete(item.key)}
+              onPress={() => handleDelete(item.key.substring(1))}
               style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
               <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
             </Pressable>
@@ -247,6 +252,12 @@ export default function Exercises() {
         keyExtractor={(item, index) => index.toString()}
         style={{ width: '100%' }}
       />
+      <Pressable
+        style={{ backgroundColor: 'red', marginTop: 30, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
+        onPress={handleRemoveAll}
+      >
+        <Text style={{ color: 'white', fontSize: 18 }}>Remove all exercises</Text>
+      </Pressable>
     </View>
 
   )

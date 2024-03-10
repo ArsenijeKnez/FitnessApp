@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, FlatList, Alert } from 'react-native';
-import { storeData, getData, fetchExpense,removeData} from '../database/exerciseDB';
+import { storeExpense, getExpense, fetchExpense,removeExpense} from '../database/exerciseDB';
 
 export default function Finances() {
   const [purchaseName, setPurchaseName] = useState('');
@@ -34,8 +34,9 @@ export default function Finances() {
       amount: purchaseAmount,
       date: currentDate,
     };
-    stringPurchase = JSON.parse(newPurchase);
-    storeData(purchaseName, stringPurchase).then(() => {
+    console.log(newPurchase)
+    stringPurchase = JSON.stringify(newPurchase);
+    storeExpense(purchaseName, stringPurchase).then(() => {
       setPurchaseName('');
       setPurchaseAmount('');
       fetchExpense(setPurchases);
@@ -43,7 +44,7 @@ export default function Finances() {
   };
 
   const handleDeletePurchase = (purchase) => {
-    removeData(purchase);
+    removeExpense(purchase);
     fetchExpense(setPurchases);
     //Alert.alert('Delete', 'Are you sure you want to delete this purchase?', [
     //  { text: 'Cancel', style: 'cancel' },

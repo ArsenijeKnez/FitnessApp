@@ -1,7 +1,7 @@
 // register on rapid api, subscirbe exercise db api and use your api key here
 // https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb
 
-export const rapidApiKey = '04aa0cc31bmshea3f40898ef3d9dp122e90jsne626e72544a4';
+
 
 export const menuItems = [
   {
