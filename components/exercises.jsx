@@ -146,7 +146,7 @@ export default function Exercises() {
           </View>
       </View>
       <Pressable
-        style={{ backgroundColor: 'gray', marginTop: 10, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
+        style={{ backgroundColor: '#55B881', marginTop: 10, paddingVertical: 12, paddingHorizontal: 40, borderRadius: 8, marginBottom: 20, elevation: 6 }}
         onPress={handleSubmit}
       >
         <Text style={{ color: 'white', fontSize: 18 }}>Submit</Text>

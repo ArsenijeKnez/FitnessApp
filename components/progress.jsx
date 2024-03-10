@@ -37,15 +37,31 @@ export default function Progress() {
     const records = value.records;
     console.log(records);
     if(records.length > 1 ){
-    const exerciseData = {
-      labels: records.map((record) => record.date),
-        datasets: [
-          {
-            data: records.map((record) => record.record),
-          },
-        ],
-    };
-    setData(exerciseData);
+      if(records.length < 5){
+      const exerciseData = {
+        labels: records.map((record) => record.date),
+          datasets: [
+            {
+              data: records.map((record) => record.record),
+            },
+          ],
+      };
+      setData(exerciseData);
+      }
+      else{
+        const exerciseData = {
+          labels: records.map((record) => record.date),
+            datasets: [
+              {
+                data: records.map((record) => record.record),
+              },
+            ],
+        };
+        for(id = 1; id < records.length-1; id++){
+          exerciseData.labels[id] = "";
+        }
+        setData(exerciseData);
+      }
     }
     else{
       const exerciseData = {
@@ -107,8 +123,8 @@ export default function Progress() {
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
-              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
-              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+              style={{ backgroundColor: '#55B881', paddingHorizontal: 12, marginVertical: 4, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, paddingVertical: 4}}>Show</Text>
             </Pressable>
           </View>
           </View>
@@ -129,8 +145,8 @@ export default function Progress() {
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
-              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
-              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+              style={{ backgroundColor: '#55B881', paddingHorizontal: 12, marginVertical: 4, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, paddingVertical: 4}}>Show</Text>
             </Pressable>
           </View>
           </View>
@@ -152,8 +168,8 @@ export default function Progress() {
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
-              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
-              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+              style={{ backgroundColor: '#55B881', paddingHorizontal: 12, marginVertical: 4, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, paddingVertical: 4}}>Show</Text>
             </Pressable>
           </View>
           </View>
@@ -175,8 +191,8 @@ export default function Progress() {
             </View>
             <Pressable 
               onPress={() => handleDisplay(item)}
-              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
-              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+              style={{ backgroundColor: '#55B881', paddingHorizontal: 12, marginVertical: 4, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, paddingVertical: 4}}>Show</Text>
             </Pressable>
             </View>
           </View>

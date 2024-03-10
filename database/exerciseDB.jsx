@@ -34,6 +34,18 @@ export const fetchData = async (setData1, setData2, setData3, setData4) => {
     }
   };
 
+  export const fetchExpense = async (setPurchases) => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const keyValuePair = await AsyncStorage.multiGet(keys);
+      
+      setPurchases(keyValuePair);
+    } catch (e) {
+      console.error('Failed to fetch data:', e);
+    }
+  };
+
+
 export const storeData = async (key, value) => {
     try {
       await AsyncStorage.setItem(
