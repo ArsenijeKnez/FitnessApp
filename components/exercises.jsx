@@ -1,6 +1,7 @@
 import { RefreshControl, View, Text, FlatList,TextInput, Alert, Pressable, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect } from 'react'
+import Confetti from 'react-native-confetti';
+import React, { useState, useEffect , useRef } from 'react'
 import { RadioButton } from 'react-native-paper'; 
 import { getExercise, fetchExercises, storeExercise, clearAllData,removeExercise } from '../database/exerciseDB';
 
@@ -13,6 +14,7 @@ export default function Exercises() {
   const [data3, setData3] = useState([]);
   const [data4, setData4] = useState([]);
   const [selectedValue, setSelectedValue] = useState('Free Weight'); 
+  const confettiRef = useRef(null);
   
   useEffect(() => {
     fetchExercises(setData1, setData2, setData3, setData4);
@@ -50,8 +52,8 @@ export default function Exercises() {
     getExercise(exerciseName).then((result) => {
       Exercise = result;
       const currentDate = new Date().toISOString().split('T')[0];
-      if(Exercise == 'empty')
-      {
+      if (Exercise == 'empty') {
+        confettiRef.current?.startConfetti();
         Exercise = {
           name: exerciseName,
           exerciseType: selectedValue,
@@ -59,18 +61,23 @@ export default function Exercises() {
             { date: currentDate, record: exercisePR },
           ],
         };
+      } else {
+        Exercise = JSON.parse(Exercise);
+        Exercise.exerciseType = selectedValue;
+        Exercise.records.push({ date: currentDate, record: exercisePR });
+      
+        let previousRecord = Exercise.records[Exercise.records.length - 2]?.record || 0;
+        if (exercisePR > previousRecord) {
+          confettiRef.current?.startConfetti();
+        }
       }
-      else
-      {
-      Exercise = JSON.parse(Exercise);
-      Exercise.exerciseType = selectedValue;
-      Exercise.records.push({date: currentDate, record: exercisePR});
-    }
-    exerciseString = JSON.stringify(Exercise);
-    storeExercise(exerciseName, exerciseString);
-    setExerciseName('');
-    setExercisePR('');
-    fetchExercises(setData1, setData2, setData3, setData4);
+
+
+      exerciseString = JSON.stringify(Exercise);
+      storeExercise(exerciseName, exerciseString);
+      setExerciseName('');
+      setExercisePR('');
+      fetchExercises(setData1, setData2, setData3, setData4);
     });
   };
 
@@ -82,6 +89,10 @@ export default function Exercises() {
 
   const handleRemoveAll= () => {
     clearAllData().then(() => {
+      setData1([]);
+      setData2([]);
+      setData3([]);
+      setData4([]);
       fetchExercises(setData1, setData2, setData3, setData4);
     });
   };
@@ -167,6 +178,13 @@ export default function Exercises() {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+      <Confetti
+        ref={confettiRef}
+        duration={2600} 
+        confettiCount={40}
+        size={1.2} 
+        
+      />
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Add or update exercise</Text>
       <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 20, width: '100%', paddingHorizontal: 10, elevation: 6 }}>
         <TextInput

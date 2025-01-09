@@ -81,11 +81,13 @@ export default function Finances() {
           <View style={{ backgroundColor: 'white', borderRadius: 8, marginBottom: 10, padding: 10, elevation: 6 ,flexDirection: 'row'}}>
             <View>
               <Text style={{ fontSize: 16 }}>Expense: {item[0].substring(1)}</Text>
+              <Text style={{ fontSize: 16 }}>Amount: {JSON.parse(item[1]).amount}</Text>
+              <Text style={{ fontSize: 16 }}>Date: {JSON.parse(item[1]).date}</Text>
             </View>
             <Pressable 
               onPress={() => handleDeletePurchase(item[0].substring(1))}
-              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 2, borderRadius: 4,  marginLeft: 'auto' }}>
-              <Text style={{ color: 'white', fontSize: 16, marginTop: 6.4}}>Delete</Text>
+              style={{ backgroundColor: 'red', paddingHorizontal: 8, marginVertical: 12, borderRadius: 4,  marginLeft: 'auto' }}>
+              <Text style={{ color: 'white', fontSize: 16, margin: 6.4}}>Delete</Text>
             </Pressable>
           </View>
         )}
