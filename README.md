@@ -1,6 +1,6 @@
 <h1 align="center">Fitness Planner App</h1>
 
-This is a work-in-progress fitness planner app built using React Native. The app allows users to select exercises for each day of the week and track their fitness plans.
+A practice fitness planner application built with React Native. The app allows users to create weekly workout plans by selecting exercises for each day of the week and organizing their fitness routines in a simple and intuitive interface.
 
 <h2>Features</h2>
 <p>-Select exercises for each day of the week</p>
